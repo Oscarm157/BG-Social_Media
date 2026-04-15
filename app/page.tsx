@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { InputTabs, type InputMode } from "@/components/InputTabs";
 import { ConfigPanel } from "@/components/ConfigPanel";
 import { PostVariantCard } from "@/components/PostVariantCard";
+import { ProgressIndicator } from "@/components/ProgressIndicator";
 import type { GenerateResponse, Red } from "@/lib/types";
 
 export default function HomePage() {
@@ -174,13 +175,8 @@ export default function HomePage() {
         </details>
       )}
 
-      {loading && (
-        <div className="mt-10 flex items-center justify-center gap-3 text-slate-500">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-brand-accent" />
-          <span className="text-sm">
-            {extracting ? "Extrayendo contenido…" : "Generando variantes con IA…"}
-          </span>
-        </div>
+      {(loading || extracting) && (
+        <ProgressIndicator phase={extracting ? "extracting" : "generating"} />
       )}
 
       {result && (

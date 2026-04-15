@@ -29,13 +29,14 @@ export async function generatePosts(
     throw new Error("Respuesta del modelo sin bloque de texto.");
   }
 
-  if (response.stop_reason === "max_tokens") {
+  const stopReason = response.stop_reason as string | null;
+  if (stopReason === "max_tokens") {
     throw new Error(
       "La respuesta del modelo se cortó por límite de tokens. Reduce el número de redes seleccionadas o acorta el texto fuente."
     );
   }
 
-  if (response.stop_reason === "refusal") {
+  if (stopReason === "refusal") {
     throw new Error(
       "El modelo rechazó la solicitud por política de contenido. Revisa el texto fuente."
     );
@@ -49,7 +50,7 @@ export async function generatePosts(
     parsed = JSON.parse(json);
   } catch (err) {
     throw new Error(
-      `El modelo no devolvió JSON válido (stop_reason: ${response.stop_reason}). Fragmento: ${raw.slice(0, 300)}`
+      `El modelo no devolvió JSON válido (stop_reason: ${stopReason}). Fragmento: ${raw.slice(0, 300)}`
     );
   }
 
