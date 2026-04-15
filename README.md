@@ -7,7 +7,6 @@ Herramienta interna para generar posts de redes sociales (LinkedIn, Instagram, F
 Requisitos: Node.js 18.17+ (recomendado 20+).
 
 ```bash
-cd consulting-posts
 npm install
 cp .env.local.example .env.local
 # edita .env.local y pega tu ANTHROPIC_API_KEY
@@ -48,13 +47,15 @@ Al cambiar cualquiera de estos, no hay que tocar nada más del código.
 
 ## Modelo
 
-Por defecto usa `claude-opus-4-6`. Si quieres bajar costo, en `lib/anthropic.ts` cambia `DEFAULT_MODEL` a `claude-sonnet-4-6`.
+Por defecto usa `claude-sonnet-4-6` (balance costo/calidad). Para máxima calidad, en `lib/anthropic.ts` cambia `DEFAULT_MODEL` a `claude-opus-4-6` (más lento y caro).
 
 ## Deploy en Vercel
 
 1. `vercel` (o sube el repo y conecta en el dashboard).
 2. En Project Settings → Environment Variables, agrega `ANTHROPIC_API_KEY`.
 3. Deploy. Como no hay login, mantén el deploy **privado** (Vercel team / password protection) o solo comparte la URL con quien corresponda.
+
+> ⚠️ **Importante sobre timeouts**: las rutas `/api/generate` y `/api/extract` declaran `maxDuration` de 60–120s, pero el plan **Hobby** de Vercel limita a 10s y genera 504. Para producción, usa plan **Pro** (60s) o superior. En desarrollo local no aplica este límite.
 
 ## Límites conocidos (primera versión)
 

@@ -42,6 +42,14 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    for (const a of approaches) {
+      if (typeof a !== "string" || a.trim().length === 0) {
+        return NextResponse.json(
+          { error: "Todos los enfoques deben ser texto no vacío." },
+          { status: 400 }
+        );
+      }
+    }
 
     const result = await generatePosts({
       text,

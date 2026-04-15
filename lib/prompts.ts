@@ -25,13 +25,13 @@ El lector objetivo es: dueño de empresa importadora/exportadora, director de co
 function networkInstruction(network: Red): string {
   switch (network) {
     case "linkedin":
-      return `LinkedIn — 900 a 1500 caracteres. Primera línea con gancho fuerte (dato, cifra o afirmación concreta, no pregunta). Párrafos cortos separados por línea en blanco. Cierre con toma de postura o siguiente paso concreto. Hashtags: 3 a 5 al final, relevantes al sector (ej. #ComercioExterior #DerechoAduanero #IMMEX). Nada de @menciones inventadas.`;
+      return `LinkedIn — 600 a 1000 caracteres. Sé conciso: ve al grano, sin relleno. Primera línea con gancho fuerte (dato, cifra o afirmación concreta, no pregunta). Párrafos cortos separados por línea en blanco. Cierre con toma de postura o siguiente paso concreto en una línea. Hashtags: 3 a 5 al final, relevantes al sector (ej. #ComercioExterior #DerechoAduanero #IMMEX). Nada de @menciones inventadas.`;
     case "facebook":
-      return `Facebook — 400 a 700 caracteres. Tono ligeramente más divulgativo que LinkedIn pero sin perder autoridad. Un solo bloque de texto fluido, sin exceso de viñetas. Hashtags: 0 a 3 al final, solo si aportan.`;
+      return `Facebook — 260 a 455 caracteres. Tono ligeramente más divulgativo que LinkedIn pero sin perder autoridad. Un solo bloque de texto fluido, sin viñetas. Ve directo al hecho y su impacto, sin contexto innecesario. Hashtags: 0 a 3 al final, solo si aportan.`;
     case "instagram":
       return `Instagram — Devuelve un objeto con dos campos:
-  - "caption": 300 a 500 caracteres, hook en primera línea, texto que complemente (no repita) los slides. Al final incluye entre 8 y 12 hashtags relevantes.
-  - "slides": arreglo de 5 a 8 slides para carrusel. Cada slide es { "title": "...", "body": "..." }. Slide 1 es portada (title = gancho fuerte, body = subtítulo breve). Slides intermedios desarrollan el contenido: una idea por slide, title corto (máx 8 palabras), body de 30 a 60 palabras. Slide final incluye cierre o call-to-action profesional (ej. "Asesórate antes de operar bajo este esquema.").`;
+  - "caption": 200 a 325 caracteres, hook en primera línea, texto que complemente (no repita) los slides. Al final incluye entre 8 y 12 hashtags relevantes.
+  - "slides": arreglo de 5 a 8 slides para carrusel. Cada slide es { "title": "...", "body": "..." }. Slide 1 es portada (title = gancho fuerte, body = subtítulo breve). Slides intermedios desarrollan el contenido: una idea por slide, title corto (máx 8 palabras), body de 20 a 40 palabras — conciso, sin rodeos. Slide final incluye cierre o call-to-action profesional (ej. "Asesórate antes de operar bajo este esquema.").`;
   }
 }
 
