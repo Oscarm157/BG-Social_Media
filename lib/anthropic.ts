@@ -6,9 +6,9 @@ const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-// claude-sonnet-4-5: balance de costo/calidad, rápido, suficiente para redacción.
-// Para máxima calidad puedes cambiar a "claude-opus-4-5" (más lento y caro).
-export const DEFAULT_MODEL = "claude-sonnet-4-5";
+// claude-sonnet-4-6: balance de costo/calidad, rápido, suficiente para redacción.
+// Para máxima calidad puedes cambiar a "claude-opus-4-6" (más lento y caro).
+export const DEFAULT_MODEL = "claude-sonnet-4-6";
 
 export async function generatePosts(
   req: GenerateRequest,
@@ -18,7 +18,8 @@ export async function generatePosts(
 
   const response = await client.messages.create({
     model,
-    max_tokens: 6000,
+    max_tokens: 8192,
+    temperature: 0.8,
     system: SYSTEM_PROMPT,
     messages: [{ role: "user", content: userPrompt }],
   });
@@ -26,6 +27,18 @@ export async function generatePosts(
   const textBlock = response.content.find((b) => b.type === "text");
   if (!textBlock || textBlock.type !== "text") {
     throw new Error("Respuesta del modelo sin bloque de texto.");
+  }
+
+  if (response.stop_reason === "max_tokens") {
+    throw new Error(
+      "La respuesta del modelo se cortó por límite de tokens. Reduce el número de redes seleccionadas o acorta el texto fuente."
+    );
+  }
+
+  if (response.stop_reason === "refusal") {
+    throw new Error(
+      "El modelo rechazó la solicitud por política de contenido. Revisa el texto fuente."
+    );
   }
 
   const raw = textBlock.text.trim();
@@ -36,7 +49,7 @@ export async function generatePosts(
     parsed = JSON.parse(json);
   } catch (err) {
     throw new Error(
-      `El modelo no devolvió JSON válido. Fragmento: ${raw.slice(0, 300)}`
+      `El modelo no devolvió JSON válido (stop_reason: ${response.stop_reason}). Fragmento: ${raw.slice(0, 300)}`
     );
   }
 
