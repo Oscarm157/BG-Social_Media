@@ -178,7 +178,7 @@ export default function HomePage() {
         <div className="mt-10 flex items-center justify-center gap-3 text-slate-500">
           <span className="h-2 w-2 animate-pulse rounded-full bg-brand-accent" />
           <span className="text-sm">
-            {extracting ? "Extrayendo contenido…" : "Generando variantes con Claude…"}
+            {extracting ? "Extrayendo contenido…" : "Generando variantes con IA…"}
           </span>
         </div>
       )}
