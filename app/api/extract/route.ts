@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ error: "Tipo no soportado." }, { status: 400 });
   } catch (err) {
+    console.error("[/api/extract] error:", err);
     const message = err instanceof Error ? err.message : "Error desconocido.";
     return NextResponse.json({ error: message }, { status: 500 });
   }

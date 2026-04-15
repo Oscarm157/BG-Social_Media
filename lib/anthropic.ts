@@ -6,7 +6,9 @@ const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-export const DEFAULT_MODEL = "claude-opus-4-6";
+// claude-sonnet-4-5: balance de costo/calidad, rápido, suficiente para redacción.
+// Para máxima calidad puedes cambiar a "claude-opus-4-5" (más lento y caro).
+export const DEFAULT_MODEL = "claude-sonnet-4-5";
 
 export async function generatePosts(
   req: GenerateRequest,
@@ -16,7 +18,7 @@ export async function generatePosts(
 
   const response = await client.messages.create({
     model,
-    max_tokens: 4096,
+    max_tokens: 6000,
     system: SYSTEM_PROMPT,
     messages: [{ role: "user", content: userPrompt }],
   });

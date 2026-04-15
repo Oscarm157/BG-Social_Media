@@ -86,6 +86,8 @@ export default function HomePage() {
     setError(null);
     setResult(null);
     setLoading(true);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 90_000);
     try {
       const sourceText = await extract();
       setExtractedText(sourceText);
@@ -94,13 +96,25 @@ export default function HomePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: sourceText, networks, approaches }),
+        signal: controller.signal,
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Error generando posts.");
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(
+          data.error ?? `Error ${res.status}: ${res.statusText || "sin detalle"}`
+        );
+      }
       setResult(data as GenerateResponse);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error desconocido.");
+      if ((err as Error)?.name === "AbortError") {
+        setError(
+          "La generación tardó más de 90 segundos y fue cancelada. Revisa los logs de Vercel (probable timeout del plan Hobby: 10s)."
+        );
+      } else {
+        setError(err instanceof Error ? err.message : "Error desconocido.");
+      }
     } finally {
+      clearTimeout(timeout);
       setLoading(false);
     }
   };
